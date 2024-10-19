@@ -31,6 +31,8 @@ dependencies:
   flutter_hooks: ^0.20.5
   flutter:
     sdk: flutter
+  smooth_page_indicator: ^1.2.0+3
+  circular_countdown_timer: ^0.2.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -40,6 +42,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl: ^0.17.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -53,6 +56,14 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - lib/assets/MyPlan Logo 2.png
+    - lib/assets/1st_icon.png
+    - lib/assets/2nd_icon.png
+    - lib/assets/3rd_icon.png
+    - lib/assets/logo.png
+    - lib/assets/flashcards_icon.png
+    - lib/assets/pomodoro_icon.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -89,3 +100,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

@@ -9,7 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // Disable the debug banner
       home: FrontPage(), // Set the FrontPage as the home page
     );
+    
   }
 }

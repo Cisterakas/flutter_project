@@ -51,19 +51,19 @@ class _PageViewScreenState extends State<PageViewScreen> {
               children: [
                 _buildPage(
                   color: Color(0xfffff8e8),
-                  text: 'Page 1: Introduction',
+                  text: 'Welcome to MyPath Student Planner',
                   imagePath: 'lib/assets/1st_icon.png',
                   pageIndex: 0,
                 ),
                 _buildPage(
                   color: Color(0xfffff8e8),
-                  text: 'Page 2: Features',
+                  text: 'Effective Study Methods',
                   imagePath: 'lib/assets/2nd_icon.png',
                   pageIndex: 1,
                 ),
                 _buildPage(
                   color: Color(0xfffff8e8),
-                  text: 'Page 3: Get Started',
+                  text: 'Dynamic Progress Tracker',
                   imagePath: 'lib/assets/3rd_icon.png',
                   pageIndex: 2,
                 ),

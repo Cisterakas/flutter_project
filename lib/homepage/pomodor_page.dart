@@ -1,47 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:flutter_project/appbar/custom_app_bar.dart';  // Your custom app bar
+import 'package:flutter_project/appbar/custom_app_bar_dynamic.dart';
+import 'package:flutter_project/pomodoro/settings_page.dart';
+import 'package:flutter_project/title_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PomodoroPage extends StatefulWidget {
+class PomodoroPage extends ConsumerStatefulWidget {
   @override
   _PomodoroPageState createState() => _PomodoroPageState();
 }
 
-class _PomodoroPageState extends State<PomodoroPage> {
+class _PomodoroPageState extends ConsumerState<PomodoroPage> {
   final CountDownController _controller = CountDownController();
-  bool isRunning = false; // To track if the timer is running
+  bool isRunning = false;
+  int focusTime = 60;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the title for PomodoroPage
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(titleProvider.notifier).state = 'Pomodoro Timer';
+    });
+  }
+
+  void updateFocusTime(int newFocusTime) {
+    setState(() {
+      focusTime = newFocusTime;
+    });
+    _controller.restart(duration: focusTime * 60);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      backgroundColor: Color(0xfffff8e8),  // Use your custom app bar here
+      appBar: CustomAppBarDynamic(),
+      backgroundColor: Color(0xfffff8e8),
       body: Stack(
         children: [
-          Align(
-            alignment: Alignment.topLeft, // Align the back button to the top left
+          Positioned(
+            top: 10,
+            left: 10,
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.orange[400]),
               onPressed: () {
-                Navigator.pop(context); // Navigate back when pressed
+                Navigator.pop(context);
               },
             ),
           ),
-          Align(
-            alignment: Alignment.topRight, // Align the settings button to the top right
+          Positioned(
+            top: 10,
+            right: 10,
             child: IconButton(
               icon: Icon(Icons.settings, color: Colors.orange[400]),
-              onPressed: () {
-                // Open settings when pressed
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(focusTime: focusTime),
+                  ),
+                );
+                if (result != null) {
+                  updateFocusTime(result);
+                }
+                // Reset title after returning from SettingsPage
+                ref.read(titleProvider.notifier).state = 'Pomodoro Timer';
               },
             ),
           ),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Vertically center the column
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularCountDownTimer(
-                  duration: 3600, // Set for 60 minutes (3600 seconds)
+                  duration: focusTime * 60,
                   initialDuration: 0,
                   controller: _controller,
                   width: 200.0,
@@ -56,7 +88,7 @@ class _PomodoroPageState extends State<PomodoroPage> {
                     color: Colors.orange[400],
                     fontWeight: FontWeight.bold,
                   ),
-                  isReverse: true, // Count downwards
+                  isReverse: true,
                   onComplete: () {
                     setState(() {
                       isRunning = false;
@@ -64,7 +96,6 @@ class _PomodoroPageState extends State<PomodoroPage> {
                   },
                 ),
                 SizedBox(height: 20),
-                // Play/Pause and Restart Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -85,7 +116,7 @@ class _PomodoroPageState extends State<PomodoroPage> {
                         });
                       },
                     ),
-                    SizedBox(width: 20), // Space between Play and Restart buttons
+                    SizedBox(width: 20),
                     IconButton(
                       icon: Icon(
                         Icons.restart_alt,
@@ -93,18 +124,17 @@ class _PomodoroPageState extends State<PomodoroPage> {
                         color: Colors.orange[400],
                       ),
                       onPressed: () {
-                        _controller.restart(); // Restart the timer
+                        _controller.restart();
                         setState(() {
-                          isRunning = true; // Set timer to running state
+                          isRunning = true;
                         });
                       },
                     ),
                   ],
                 ),
                 SizedBox(height: 20),
-                // Notification Text
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20), // Add horizontal padding
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'While your focus mode is on, all of your notifications will be off',
                     textAlign: TextAlign.center,
@@ -115,9 +145,8 @@ class _PomodoroPageState extends State<PomodoroPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                // Pomodoro Image at the bottom
                 Image.asset(
-                  'lib/assets/pomodoro_icon.png', // Change this to your image path
+                  'lib/assets/pomodoro_icon.png',
                   width: 120,
                   height: 120,
                 ),

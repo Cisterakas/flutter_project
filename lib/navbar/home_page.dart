@@ -349,45 +349,119 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildScheduleSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Schedule',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
-              ),
-              IconButton(
-                icon: const Icon(Icons.add_circle, color: Colors.orange),
-                onPressed: () {
-                  _showAddScheduleModal();
-                },
-              ),
-            ],
-          ),
+ Widget _buildScheduleSection() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Schedule Header
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Schedule',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
+            ),
+            IconButton(
+              icon: const Icon(Icons.add_circle, color: Colors.orange),
+              onPressed: () {
+                _showAddScheduleModal(); // Open ModalBottomSheet to add a new schedule
+              },
+            ),
+          ],
         ),
-        const SizedBox(height: 10),
-        ..._classes.map((classItem) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-            child: Card(
-              child: ListTile(
-                title: Text(classItem['subject'] ?? ""),
-                subtitle: Text(
-                  "Teacher: ${classItem['teacher']}\n"
-                  "Room: ${classItem['room']}, Building: ${classItem['building']}\n"
-                  "Time: ${classItem['startTime']} - ${classItem['endTime']}",
-                ),
+      ),
+      const SizedBox(height: 10),
+
+      // TabBar for Classes, Exam, Tasks, Events
+      DefaultTabController(
+        length: 4, // Number of tabs
+        child: Column(
+          children: [
+            const TabBar(
+              labelColor: Colors.green,
+              unselectedLabelColor: Colors.black87,
+              indicatorColor: Colors.green,
+              tabs: [
+                Tab(text: "Classes"),
+                Tab(text: "Exam"),
+                Tab(text: "Tasks"),
+                Tab(text: "Events"),
+              ],
+            ),
+            Container(
+              height: 200, // Fixed height for tab content
+              child: TabBarView(
+                children: [
+                  _buildClassesTab(),
+                  _buildExamsTab(),
+                  _buildTasksTab(),
+                  _buildEventsTab(),
+                ],
               ),
             ),
-          );
-        }).toList(),
-      ],
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+// Classes Tab Content
+Widget _buildClassesTab() {
+  if (_classes.isEmpty) {
+    return const Center(
+      child: Text(
+        "No Classes.",
+        style: TextStyle(color: Colors.green, fontSize: 16),
+      ),
     );
   }
+  return ListView.builder(
+    itemCount: _classes.length,
+    itemBuilder: (context, index) {
+      final classItem = _classes[index];
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+        child: ListTile(
+          title: Text(classItem['subject'] ?? ""),
+          subtitle: Text(
+            "Teacher: ${classItem['teacher']}\n"
+            "Room: ${classItem['room']}, Building: ${classItem['building']}\n"
+            "Time: ${classItem['startTime']} - ${classItem['endTime']}",
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// Placeholder content for other tabs
+Widget _buildExamsTab() {
+  return const Center(
+    child: Text(
+      "No Exams.",
+      style: TextStyle(color: Colors.green, fontSize: 16),
+    ),
+  );
+}
+
+Widget _buildTasksTab() {
+  return const Center(
+    child: Text(
+      "No Tasks.",
+      style: TextStyle(color: Colors.green, fontSize: 16),
+    ),
+  );
+}
+
+Widget _buildEventsTab() {
+  return const Center(
+    child: Text(
+      "No Events.",
+      style: TextStyle(color: Colors.green, fontSize: 16),
+    ),
+  );
+}
 }

@@ -13,7 +13,12 @@ class PomodoroPage extends ConsumerStatefulWidget {
 class _PomodoroPageState extends ConsumerState<PomodoroPage> {
   final CountDownController _controller = CountDownController();
   bool isRunning = false;
-  int focusTime = 60;
+
+  // Default Timer Settings
+  int focusTime = 25;
+  int shortBreak = 5;
+  int longBreak = 20;
+  int longBreakInterval = 2;
 
   @override
   void initState() {
@@ -24,11 +29,19 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
     });
   }
 
-  void updateFocusTime(int newFocusTime) {
+  void updateSettings({
+    required int newFocusTime,
+    required int newShortBreak,
+    required int newLongBreak,
+    required int newLongBreakInterval,
+  }) {
     setState(() {
       focusTime = newFocusTime;
+      shortBreak = newShortBreak;
+      longBreak = newLongBreak;
+      longBreakInterval = newLongBreakInterval;
     });
-    _controller.restart(duration: focusTime * 60);
+    _controller.restart(duration: focusTime * 60); // Restart with updated focus time
   }
 
   @override
@@ -54,16 +67,25 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
             child: IconButton(
               icon: Icon(Icons.settings, color: Colors.orange[400]),
               onPressed: () async {
-                final result = await Navigator.push(
+                final settings = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsPage(focusTime: focusTime),
+                    builder: (context) => SettingsPage(
+                      focusTime: focusTime,
+                      shortBreak: shortBreak,
+                      longBreak: longBreak,
+                      longBreakInterval: longBreakInterval,
+                    ),
                   ),
                 );
-                if (result != null) {
-                  updateFocusTime(result);
+                if (settings != null) {
+                  updateSettings(
+                    newFocusTime: settings['focusTime'],
+                    newShortBreak: settings['shortBreak'],
+                    newLongBreak: settings['longBreak'],
+                    newLongBreakInterval: settings['longBreakInterval'],
+                  );
                 }
-                // Reset title after returning from SettingsPage
                 ref.read(titleProvider.notifier).state = 'Pomodoro Timer';
               },
             ),

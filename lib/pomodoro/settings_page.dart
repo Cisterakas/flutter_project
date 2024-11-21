@@ -5,28 +5,46 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   final int focusTime;
+  final int shortBreak;
+  final int longBreak;
+  final int longBreakInterval;
 
-  SettingsPage({required this.focusTime});
+  SettingsPage({
+    required this.focusTime,
+    required this.shortBreak,
+    required this.longBreak,
+    required this.longBreakInterval,
+  });
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  int selectedFocusTime = 60;
-  int selectedShortBreak = 5;
-  int selectedLongBreak = 20;
-  int selectedLongBreakInterval = 2;
-  bool alertSound = false;
+  late int selectedFocusTime;
+  late int selectedShortBreak;
+  late int selectedLongBreak;
+  late int selectedLongBreakInterval;
 
   @override
   void initState() {
     super.initState();
     selectedFocusTime = widget.focusTime;
+    selectedShortBreak = widget.shortBreak;
+    selectedLongBreak = widget.longBreak;
+    selectedLongBreakInterval = widget.longBreakInterval;
 
-    // Set the title for SettingsPage
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(titleProvider.notifier).state = 'Settings';
+    });
+  }
+
+  void saveSettings() {
+    Navigator.pop(context, {
+      'focusTime': selectedFocusTime,
+      'shortBreak': selectedShortBreak,
+      'longBreak': selectedLongBreak,
+      'longBreakInterval': selectedLongBreakInterval,
     });
   }
 
@@ -35,121 +53,67 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     return Scaffold(
       appBar: CustomAppBarDynamic(),
       backgroundColor: Color(0xfffff8e8),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.orange[400]),
-              onPressed: () {
-                Navigator.pop(context, selectedFocusTime);
-                // Reset title after going back
-                ref.read(titleProvider.notifier).state = 'Pomodoro Timer';
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Timer', style: TextStyle(fontSize: 24, color: Colors.green)),
+            buildDropdownTile(
+              label: 'Focus time',
+              value: selectedFocusTime,
+              onChanged: (value) => setState(() => selectedFocusTime = value!),
+              options: [15, 25, 30, 45, 60, 90],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 60), // Space for the back button and title
-                Text('Timer', style: TextStyle(fontSize: 24, color: Colors.green)),
-                SizedBox(height: 10),
-                // Focus Time Dropdown
-                buildDropdownTile(
-                  label: 'Focus time',
-                  value: '$selectedFocusTime min',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedFocusTime = value!;
-                    });
-                  },
-                  options: [15, 25, 30, 45, 60, 90],
-                ),
-                buildDropdownTile(
-                  label: 'Short break',
-                  value: '$selectedShortBreak min',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedShortBreak = value!;
-                    });
-                  },
-                  options: [5, 10, 15],
-                ),
-                buildDropdownTile(
-                  label: 'Long break',
-                  value: '$selectedLongBreak min',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLongBreak = value!;
-                    });
-                  },
-                  options: [15, 20, 30],
-                ),
-                buildDropdownTile(
-                  label: 'Long break interval',
-                  value: '$selectedLongBreakInterval intervals',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLongBreakInterval = value!;
-                    });
-                  },
-                  options: [1, 2, 3, 4],
-                ),
-                SizedBox(height: 10),
-                Text('Notifications', style: TextStyle(fontSize: 24, color: Colors.green)),
-                SizedBox(height: 10),
-                SwitchListTile(
-                  title: Text('Alert Sound'),
-                  value: alertSound,
-                  onChanged: (bool value) {
-                    setState(() {
-                      alertSound = value;
-                    });
-                  },
-                ),
-              ],
+            buildDropdownTile(
+              label: 'Short break',
+              value: selectedShortBreak,
+              onChanged: (value) => setState(() => selectedShortBreak = value!),
+              options: [5, 10, 15],
             ),
-          ),
-          // Back button in the top left corner
-          Positioned(
-            top: 10,
-            left: 10,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.orange[400]),
-              onPressed: () {
-                Navigator.pop(context, selectedFocusTime); // Return updated focus time
-              },
+            buildDropdownTile(
+              label: 'Long break',
+              value: selectedLongBreak,
+              onChanged: (value) => setState(() => selectedLongBreak = value!),
+              options: [15, 20, 30],
             ),
-          ),
-        ],
+            buildDropdownTile(
+              label: 'Long break interval',
+              value: selectedLongBreakInterval,
+              onChanged: (value) => setState(() => selectedLongBreakInterval = value!),
+              options: [1, 2, 3, 4],
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: saveSettings,
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                child: Text('Save Settings'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // Helper method to create a dropdown tile
   Widget buildDropdownTile({
     required String label,
-    required String value,
+    required int value,
     required ValueChanged<int?> onChanged,
     required List<int> options,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ListTile(
-        title: Text(label),
-        trailing: DropdownButton<int>(
-          value: int.tryParse(value.split(' ').first),
-          onChanged: onChanged,
-          items: options.map((int option) {
-            return DropdownMenuItem<int>(
-              value: option,
-              child: Text('$option ${label.contains("interval") ? "intervals" : "min"}'),
-            );
-          }).toList(),
-        ),
+    return ListTile(
+      title: Text(label),
+      trailing: DropdownButton<int>(
+        value: value,
+        onChanged: onChanged,
+        items: options
+            .map((option) => DropdownMenuItem<int>(
+                  value: option,
+                  child: Text('$option ${label.contains("interval") ? "intervals" : "min"}'),
+                ))
+            .toList(),
       ),
     );
   }

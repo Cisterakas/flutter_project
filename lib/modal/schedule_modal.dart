@@ -40,10 +40,10 @@ class ScheduleModal {
                   const SizedBox(height: 10),
 
                   // Tab Bar (Classes, Exams, Tasks, Events)
-                  TabBar(
-                    labelColor: const Color(0xFFE36C27), // Orange color
+                  const TabBar(
+                    labelColor: Color(0xFFE36C27), // Orange color
                     unselectedLabelColor: Colors.black87,
-                    tabs: const [
+                    tabs: [
                       Tab(text: "Classes"),
                       Tab(text: "Exams"),
                       Tab(text: "Tasks"),
@@ -96,20 +96,20 @@ class ScheduleModal {
                   const SizedBox(height: 10),
 
                   // Room and Building fields
-                  Row(
+                  const Row(
                     children: [
                       Expanded(
                         child: TextField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Room',
                             border: OutlineInputBorder(),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Expanded(
                         child: TextField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Building',
                             border: OutlineInputBorder(),
                           ),
@@ -120,8 +120,8 @@ class ScheduleModal {
                   const SizedBox(height: 10),
 
                   // Teacher field
-                  TextField(
-                    decoration: const InputDecoration(
+                  const TextField(
+                    decoration: InputDecoration(
                       labelText: 'Teacher',
                       border: OutlineInputBorder(),
                     ),

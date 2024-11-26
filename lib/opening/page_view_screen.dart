@@ -3,6 +3,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_project/navbar/navbar.dart'; // Import NavBar for final navigation
 
 class PageViewScreen extends StatefulWidget {
+  const PageViewScreen({super.key});
+
   @override
   _PageViewScreenState createState() => _PageViewScreenState();
 }
@@ -32,7 +34,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
                 // User swiped Left
                 if (_currentPage < 2) {
                   _pageController.nextPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   );
                 }
@@ -40,7 +42,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
                 // User swiped Right
                 if (_currentPage > 0) {
                   _pageController.previousPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   );
                 }
@@ -50,19 +52,19 @@ class _PageViewScreenState extends State<PageViewScreen> {
               controller: _pageController,
               children: [
                 _buildPage(
-                  color: Color(0xfffff8e8),
+                  color: const Color(0xfffff8e8),
                   text: 'Welcome to MyPath Student Planner',
                   imagePath: 'lib/assets/1st_icon.png',
                   pageIndex: 0,
                 ),
                 _buildPage(
-                  color: Color(0xfffff8e8),
+                  color: const Color(0xfffff8e8),
                   text: 'Effective Study Methods',
                   imagePath: 'lib/assets/2nd_icon.png',
                   pageIndex: 1,
                 ),
                 _buildPage(
-                  color: Color(0xfffff8e8),
+                  color: const Color(0xfffff8e8),
                   text: 'Dynamic Progress Tracker',
                   imagePath: 'lib/assets/3rd_icon.png',
                   pageIndex: 2,
@@ -79,15 +81,15 @@ class _PageViewScreenState extends State<PageViewScreen> {
                 SmoothPageIndicator(
                   controller: _pageController,  // PageController
                   count: 3,  // Number of pages
-                  effect: WormEffect(
+                  effect: const WormEffect(
                     dotColor: Colors.grey,  // Inactive dot color
                     activeDotColor: Color.fromARGB(255, 240, 154, 41),  // Active dot color
                     dotHeight: 12,
                     dotWidth: 12,
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   "Welcome to MyPath Student Planner",
                   style: TextStyle(
                     fontSize: 16,
@@ -102,14 +104,14 @@ class _PageViewScreenState extends State<PageViewScreen> {
                         : _currentPage == 1
                             ? "Explore effective study techniques that will enhance your learning and boost your productivity!"
                             : "Celebrate your achievements and track your progress as you reach your academic goals!",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,  // Center the paragraph
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Visibility(
                   visible: _currentPage == 2,
                   child: ElevatedButton(
@@ -117,10 +119,10 @@ class _PageViewScreenState extends State<PageViewScreen> {
                       // Navigate to the main NavBar after completing the onboarding pages
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => NavBar()),
+                        MaterialPageRoute(builder: (context) => const NavBar()),
                       );
                     },
-                    child: Text('Continue'),
+                    child: const Text('Continue'),
                   ),
                 ),
               ],
@@ -137,7 +139,7 @@ class _PageViewScreenState extends State<PageViewScreen> {
         if (pageIndex < 2) {
           _pageController.animateToPage(
             pageIndex + 1,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }
@@ -153,10 +155,10 @@ class _PageViewScreenState extends State<PageViewScreen> {
               height: 195,
               fit: BoxFit.contain, // Ensure the image scales correctly
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 color: Color.fromARGB(255, 46, 45, 45),
                 fontWeight: FontWeight.w600,

@@ -3,12 +3,12 @@ import 'package:flutter_project/appbar/custom_app_bar.dart';
 import 'package:flutter_project/opening/front_page.dart'; // Import your front page
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(), // Custom app bar
+      appBar: const CustomAppBar(), // Custom app bar
       backgroundColor: const Color(0xFFFFF8E8),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -95,7 +95,7 @@ class ProfilePage extends StatelessWidget {
                 // Navigate back to the front page
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FrontPage()),
+                  MaterialPageRoute(builder: (context) => const FrontPage()),
                 );
               },
               style: ElevatedButton.styleFrom(

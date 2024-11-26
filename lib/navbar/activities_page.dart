@@ -3,7 +3,7 @@ import 'package:flutter_project/add_schedule_modal.dart'; // Import the reusable
 import 'package:flutter_project/appbar/custom_app_bar.dart'; // Import the custom app bar
 
 class ActivitiesPage extends StatefulWidget {
-  const ActivitiesPage({Key? key}) : super(key: key);
+  const ActivitiesPage({super.key});
 
   @override
   _ActivitiesPageState createState() => _ActivitiesPageState();
@@ -11,10 +11,10 @@ class ActivitiesPage extends StatefulWidget {
 
 class _ActivitiesPageState extends State<ActivitiesPage> {
   // Separate lists for activities
-  List<Map<String, String>> _classes = [];
-  List<Map<String, String>> _exams = [];
-  List<Map<String, String>> _tasks = [];
-  List<Map<String, String>> _events = [];
+  final List<Map<String, String>> _classes = [];
+  final List<Map<String, String>> _exams = [];
+  final List<Map<String, String>> _tasks = [];
+  final List<Map<String, String>> _events = [];
 
   // Filters for tabs
   String _selectedSubject = "All Subjects";
@@ -66,7 +66,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(), // Add the custom dynamic app bar
+      appBar: const CustomAppBar(), // Add the custom dynamic app bar
       backgroundColor: const Color(0xFFFFF8E8),
       body: DefaultTabController(
         length: 4,

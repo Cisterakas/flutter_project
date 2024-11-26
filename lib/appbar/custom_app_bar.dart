@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -11,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Align widgets at opposite ends
         children: [
           RichText(
-            text: TextSpan(
+            text: const TextSpan(
               text: 'Hello,\n',
               style: TextStyle(
                 color: Color(0xFF718635), // Green color for 'Hello,'
@@ -40,5 +42,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(70);  // Adjust the height of the AppBar
+  Size get preferredSize => const Size.fromHeight(70);  // Adjust the height of the AppBar
 }

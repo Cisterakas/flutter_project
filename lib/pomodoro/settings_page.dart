@@ -9,7 +9,7 @@ class SettingsPage extends ConsumerStatefulWidget {
   final int longBreak;
   final int longBreakInterval;
 
-  SettingsPage({
+  const SettingsPage({super.key, 
     required this.focusTime,
     required this.shortBreak,
     required this.longBreak,
@@ -51,14 +51,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarDynamic(),
-      backgroundColor: Color(0xfffff8e8),
+      appBar: const CustomAppBarDynamic(),
+      backgroundColor: const Color(0xfffff8e8),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Timer', style: TextStyle(fontSize: 24, color: Colors.green)),
+            const Text('Timer', style: TextStyle(fontSize: 24, color: Colors.green)),
             buildDropdownTile(
               label: 'Focus time',
               value: selectedFocusTime,
@@ -83,12 +83,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onChanged: (value) => setState(() => selectedLongBreakInterval = value!),
               options: [1, 2, 3, 4],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: saveSettings,
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: Text('Save Settings'),
+                child: const Text('Save Settings'),
               ),
             ),
           ],

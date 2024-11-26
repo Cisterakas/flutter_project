@@ -6,7 +6,7 @@ import 'package:flutter_project/homepage/flashcard_page.dart'; // Import your Fl
 import 'package:fl_chart/fl_chart.dart'; // For bar chart
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -17,10 +17,10 @@ class _HomePageState extends State<HomePage> {
   String _formattedDate = "";
 
    // Separate lists for classes, exams, tasks, and events
-  List<Map<String, String>> _classes = [];
-  List<Map<String, String>> _exams = [];
-  List<Map<String, String>> _tasks = [];
-  List<Map<String, String>> _events = [];
+  final List<Map<String, String>> _classes = [];
+  final List<Map<String, String>> _exams = [];
+  final List<Map<String, String>> _tasks = [];
+  final List<Map<String, String>> _events = [];
 
   @override
   void initState() {
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       backgroundColor: const Color(0xfffff8e8),
       body: SingleChildScrollView(
         child: Column(
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PomodoroPage()),
+                        MaterialPageRoute(builder: (context) => const PomodoroPage()),
                       );
                     },
                   ),
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FlashcardPage()),
+                        MaterialPageRoute(builder: (context) => const FlashcardPage()),
                       );
                     },
                   ),
@@ -476,7 +476,7 @@ class _HomePageState extends State<HomePage> {
               ]),
           ],
           titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
+            leftTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: true),
             ),
             bottomTitles: AxisTitles(
@@ -532,7 +532,7 @@ class _HomePageState extends State<HomePage> {
                   Tab(text: "Events"),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: 200,
                 child: TabBarView(
                   children: [

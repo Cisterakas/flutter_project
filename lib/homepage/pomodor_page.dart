@@ -6,6 +6,8 @@ import 'package:flutter_project/title_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PomodoroPage extends ConsumerStatefulWidget {
+  const PomodoroPage({super.key});
+
   @override
   _PomodoroPageState createState() => _PomodoroPageState();
 }
@@ -47,8 +49,8 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarDynamic(),
-      backgroundColor: Color(0xfffff8e8),
+      appBar: const CustomAppBarDynamic(),
+      backgroundColor: const Color(0xfffff8e8),
       body: Stack(
         children: [
           Positioned(
@@ -102,7 +104,7 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
                   height: 200.0,
                   ringColor: Colors.grey[300]!,
                   fillColor: Colors.orange[400]!,
-                  backgroundColor: Color(0xfffff8e8),
+                  backgroundColor: const Color(0xfffff8e8),
                   strokeWidth: 10.0,
                   strokeCap: StrokeCap.round,
                   textStyle: TextStyle(
@@ -117,7 +119,7 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -138,7 +140,7 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
                         });
                       },
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     IconButton(
                       icon: Icon(
                         Icons.restart_alt,
@@ -154,9 +156,9 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'While your focus mode is on, all of your notifications will be off',
                     textAlign: TextAlign.center,
@@ -166,13 +168,13 @@ class _PomodoroPageState extends ConsumerState<PomodoroPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Image.asset(
                   'lib/assets/pomodoro_icon.png',
                   width: 120,
                   height: 120,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

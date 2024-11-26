@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 class CustomAppBarDynamic extends ConsumerWidget implements PreferredSizeWidget {
+  const CustomAppBarDynamic({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Get the current title from the provider
@@ -19,7 +21,7 @@ class CustomAppBarDynamic extends ConsumerWidget implements PreferredSizeWidget 
           // Display the dynamic title
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFF718635), // Green color for the title
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -37,5 +39,5 @@ class CustomAppBarDynamic extends ConsumerWidget implements PreferredSizeWidget 
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(70);  // Adjust the height of the AppBar
+  Size get preferredSize => const Size.fromHeight(70);  // Adjust the height of the AppBar
 }

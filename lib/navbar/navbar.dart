@@ -5,6 +5,8 @@ import 'activities_page.dart';
 import 'profile_page.dart';
 
 class NavBar extends StatefulWidget {
+  const NavBar({super.key});
+
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -13,10 +15,10 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
   static final List<Widget> _pages = <Widget>[
-    HomePage(),
-    CalendarPage(),
-    ActivitiesPage(),
-    ProfilePage(),
+    const HomePage(),
+    const CalendarPage(),
+    const ActivitiesPage(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -52,8 +54,8 @@ class _NavBarState extends State<NavBar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromRGBO(249, 161, 63, 1),
-        unselectedItemColor: Color.fromRGBO(135, 164, 48, 1),
+        selectedItemColor: const Color.fromRGBO(249, 161, 63, 1),
+        unselectedItemColor: const Color.fromRGBO(135, 164, 48, 1),
         onTap: _onItemTapped,
       ),
     );

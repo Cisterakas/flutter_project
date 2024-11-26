@@ -4,6 +4,8 @@ import 'package:flutter_project/appbar/custom_app_bar.dart';
 import 'package:flutter_project/flashcard/create_flashcard_page.dart';
 
 class FlashcardPage extends StatefulWidget {
+  const FlashcardPage({super.key});
+
   @override
   _FlashcardPageState createState() => _FlashcardPageState();
 }
@@ -69,12 +71,12 @@ class _FlashcardPageState extends State<FlashcardPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete Flashcard Set'),
-          content: Text('Are you sure you want to delete this flashcard set?'),
+          title: const Text('Delete Flashcard Set'),
+          content: const Text('Are you sure you want to delete this flashcard set?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context), // Cancel action
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -83,10 +85,10 @@ class _FlashcardPageState extends State<FlashcardPage> {
                 });
                 Navigator.pop(context); // Close the dialog
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Flashcard set deleted')),
+                  const SnackBar(content: Text('Flashcard set deleted')),
                 );
               },
-              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -111,9 +113,9 @@ class _FlashcardPageState extends State<FlashcardPage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Color(0xFFD5E1B5),
+            color: const Color(0xFFD5E1B5),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -124,24 +126,24 @@ class _FlashcardPageState extends State<FlashcardPage> {
                 children: [
                   Text(
                     flashcardSet['title'],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     flashcardSet['description'],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.black54,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     'Duration: ${flashcardSet['duration']} seconds',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Colors.black45,
                     ),
@@ -156,11 +158,11 @@ class _FlashcardPageState extends State<FlashcardPage> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.edit, color: Colors.blue),
+                      icon: const Icon(Icons.edit, color: Colors.blue),
                       onPressed: () => _navigateToEditFlashcardPage(index),
                     ),
                     IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () => _deleteFlashcardSet(index),
                     ),
                   ],
@@ -176,7 +178,7 @@ class _FlashcardPageState extends State<FlashcardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(), // Add your custom app bar here
+      appBar: const CustomAppBar(), // Add your custom app bar here
       body: Column(
         children: [
           // Back button and Add Card button
@@ -186,13 +188,13 @@ class _FlashcardPageState extends State<FlashcardPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: Color(0xFF718635)),
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF718635)),
                   onPressed: () {
                     Navigator.pop(context); // Go back to the previous page
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.add_box, color: Color(0xFF718635), size: 30),
+                  icon: const Icon(Icons.add_box, color: Color(0xFF718635), size: 30),
                   onPressed: _navigateToCreateFlashcardPage,
                 ),
               ],
@@ -205,17 +207,17 @@ class _FlashcardPageState extends State<FlashcardPage> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search sets',
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey),
+                  borderSide: const BorderSide(color: Colors.grey),
                 ),
                 fillColor: Colors.white,
                 filled: true,
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
 
           // List of flashcard sets
           Expanded(

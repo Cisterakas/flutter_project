@@ -14,8 +14,8 @@ class AddScheduleModal extends StatelessWidget {
     required this.onSaveTask,
     required this.onSaveEvent,
     this.selectedDate,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

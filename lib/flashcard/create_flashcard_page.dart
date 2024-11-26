@@ -5,7 +5,7 @@ class CreateFlashcardPage extends StatefulWidget {
   final Function(Map<String, dynamic>) onFlashcardCreated;
   final Map<String, dynamic>? initialData; // Optional initial data for editing
 
-  CreateFlashcardPage({required this.onFlashcardCreated, this.initialData});
+  const CreateFlashcardPage({super.key, required this.onFlashcardCreated, this.initialData});
 
   @override
   _CreateFlashcardPageState createState() => _CreateFlashcardPageState();
@@ -38,14 +38,14 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
   void _saveFlashcardSet() {
     if (_titleController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a title for the flashcard set.')),
+        const SnackBar(content: Text('Please enter a title for the flashcard set.')),
       );
       return;
     }
 
     if (_durationController.text.isEmpty || int.tryParse(_durationController.text) == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid duration in seconds.')),
+        const SnackBar(content: Text('Please enter a valid duration in seconds.')),
       );
       return;
     }
@@ -53,7 +53,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
     for (var card in cards) {
       if (card['term']!.isEmpty || card['definition']!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('All terms and definitions must be filled out.')),
+          const SnackBar(content: Text('All terms and definitions must be filled out.')),
         );
         return;
       }
@@ -73,7 +73,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(), // Add the custom app bar
+      appBar: const CustomAppBar(), // Add the custom app bar
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -83,23 +83,23 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: Color(0xFF718635)),
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF718635)),
                   onPressed: () {
                     Navigator.pop(context); // Go back to the previous page
                   },
                 ),
                 Text(
                   widget.initialData != null ? 'Edit Flashcard Set' : 'Create New Set',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF718635),
                   ),
                 ),
-                SizedBox(width: 40), // Dummy element for alignment
+                const SizedBox(width: 40), // Dummy element for alignment
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Enter Title
             TextField(
@@ -108,13 +108,13 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 hintText: 'Enter a title',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey),
+                  borderSide: const BorderSide(color: Colors.grey),
                 ),
                 fillColor: Colors.white,
                 filled: true,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Add Description
             TextField(
@@ -124,13 +124,13 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 hintText: 'Add a description',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey),
+                  borderSide: const BorderSide(color: Colors.grey),
                 ),
                 fillColor: Colors.white,
                 filled: true,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Enter Duration
             TextField(
@@ -140,13 +140,13 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 hintText: 'Enter duration (seconds per card)',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey),
+                  borderSide: const BorderSide(color: Colors.grey),
                 ),
                 fillColor: Colors.white,
                 filled: true,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Dynamic list of cards
             Expanded(
@@ -156,9 +156,9 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFD5E1B5),
+                        color: const Color(0xFFD5E1B5),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -169,14 +169,14 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                             children: [
                               Text(
                                 '${index + 1}', // Display the card number
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(Icons.delete, color: Colors.red),
                                 onPressed: () {
                                   setState(() {
                                     cards.removeAt(index);
@@ -185,7 +185,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
                           // Enter term or question
                           Row(
@@ -199,7 +199,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                                     hintText: 'Enter term',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderSide: const BorderSide(color: Colors.grey),
                                     ),
                                     fillColor: Colors.white,
                                     filled: true,
@@ -208,7 +208,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                                       text: cards[index]['term']),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
 
                               // Enter definition or answer
                               Expanded(
@@ -220,7 +220,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                                     hintText: 'Enter definition',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderSide: const BorderSide(color: Colors.grey),
                                     ),
                                     fillColor: Colors.white,
                                     filled: true,
@@ -238,7 +238,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Add Card Button
             ElevatedButton(
@@ -248,10 +248,10 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 });
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFD5E1B5),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: const Color(0xFFD5E1B5),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
-              child: Text(
+              child: const Text(
                 '+ Add Card',
                 style: TextStyle(
                   fontSize: 16,
@@ -259,7 +259,7 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Create Button
             Align(
@@ -268,11 +268,11 @@ class _CreateFlashcardPageState extends State<CreateFlashcardPage> {
                 onPressed: _saveFlashcardSet,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 ),
                 child: Text(
                   widget.initialData != null ? 'Save Changes' : 'Create',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                   ),

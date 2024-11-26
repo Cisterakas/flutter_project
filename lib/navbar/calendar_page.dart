@@ -3,7 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_project/appbar/custom_app_bar.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+  const CalendarPage({super.key});
 
   @override
   _CalendarPageState createState() => _CalendarPageState();
@@ -13,7 +13,7 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  Map<DateTime, List<Map<String, String>>> _tasks = {};
+  final Map<DateTime, List<Map<String, String>>> _tasks = {};
 
   @override
   void initState() {
@@ -29,24 +29,24 @@ class _CalendarPageState extends State<CalendarPage> {
         String taskDuration = '';
 
         return AlertDialog(
-          title: Text('Add New Event'),
+          title: const Text('Add New Event'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: InputDecoration(labelText: 'Task Title'),
+                decoration: const InputDecoration(labelText: 'Task Title'),
                 onChanged: (value) {
                   taskTitle = value;
                 },
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Time (e.g., 10:00 AM)'),
+                decoration: const InputDecoration(labelText: 'Time (e.g., 10:00 AM)'),
                 onChanged: (value) {
                   taskTime = value;
                 },
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Duration (e.g., 1 hour)'),
+                decoration: const InputDecoration(labelText: 'Duration (e.g., 1 hour)'),
                 onChanged: (value) {
                   taskDuration = value;
                 },
@@ -58,7 +58,7 @@ class _CalendarPageState extends State<CalendarPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -77,7 +77,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         );
@@ -88,8 +88,8 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      backgroundColor: Color(0xffF6F6E9),
+      appBar: const CustomAppBar(),
+      backgroundColor: const Color(0xffF6F6E9),
       body: Column(
         children: [
           // Calendar Widget
@@ -117,7 +117,7 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               children: _tasks[_selectedDay]?.map((task) {
                     return _buildTaskCard(
                       time: task['time'] ?? '',
@@ -127,9 +127,9 @@ class _CalendarPageState extends State<CalendarPage> {
                     );
                   }).toList() ??
                   [
-                    Center(
+                    const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: Text(
                           'No tasks for the selected day',
                           style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -143,7 +143,7 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           _addEvent(_selectedDay); // Show dialog when the add button is pressed
         },
@@ -166,20 +166,20 @@ class _CalendarPageState extends State<CalendarPage> {
             children: [
               Text(
                 time,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                 ),
               ),
             ],
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     offset: Offset(0, 2),
@@ -187,7 +187,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -196,7 +196,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
@@ -213,7 +213,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     ],
                   ),
                   if (completed)
-                    Icon(
+                    const Icon(
                       Icons.check_circle,
                       color: Colors.green,
                       size: 24,

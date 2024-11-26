@@ -16,8 +16,11 @@ class _HomePageState extends State<HomePage> {
   String _formattedTime = "";
   String _formattedDate = "";
 
-  // List to store schedules
+   // Separate lists for classes, exams, tasks, and events
   List<Map<String, String>> _classes = [];
+  List<Map<String, String>> _exams = [];
+  List<Map<String, String>> _tasks = [];
+  List<Map<String, String>> _events = [];
 
   @override
   void initState() {
@@ -42,41 +45,22 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget _buildFeatureButton({
-    required String imagePath,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
-        height: 150,
-        decoration: BoxDecoration(
-          color: const Color(0xFFD5E1B5),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              imagePath,
-              width: 60,
-              height: 60,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _addNewExam(Map<String, String> newExam) {
+    setState(() {
+      _exams.add(newExam);
+    });
+  }
+
+   void _addNewTask(Map<String, String> newTask) {
+    setState(() {
+      _tasks.add(newTask);
+    });
+  }
+
+  void _addNewEvent(Map<String, String> newEvent) {
+    setState(() {
+      _events.add(newEvent);
+    });
   }
 
   @override
@@ -147,7 +131,7 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 20),
 
-            // Schedule Section with Submenu
+            // Schedule Section
             _buildScheduleSection(),
           ],
         ),
@@ -162,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showAddScheduleModal() {
+ void _showAddScheduleModal() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -170,18 +154,54 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.75,
+          initialChildSize: 0.8,
           maxChildSize: 0.9,
           minChildSize: 0.5,
           builder: (_, controller) {
-            return _buildAddScheduleForm(controller);
+            return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              child: DefaultTabController(
+                length: 4, // Four tabs: Classes, Exams, Tasks, Events
+                child: Column(
+                  children: [
+                    const TabBar(
+                      labelColor: Colors.green,
+                      unselectedLabelColor: Colors.grey,
+                      indicatorColor: Colors.green,
+                      tabs: [
+                        Tab(text: "Classes"),
+                        Tab(text: "Exams"),
+                        Tab(text: "Tasks"),
+                        Tab(text: "Events"),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          _buildAddClassForm(controller),
+                          _buildAddExamForm(controller),
+                          _buildAddTaskForm(controller),
+                          _buildAddEventForm(controller),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         );
       },
     );
   }
 
-  Widget _buildAddScheduleForm(ScrollController controller) {
+  Widget _buildAddClassForm(ScrollController controller) {
     final TextEditingController subjectController = TextEditingController();
     final TextEditingController teacherController = TextEditingController();
     final TextEditingController roomController = TextEditingController();
@@ -189,69 +209,25 @@ class _HomePageState extends State<HomePage> {
     final TextEditingController startTimeController = TextEditingController();
     final TextEditingController endTimeController = TextEditingController();
 
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-      ),
       child: SingleChildScrollView(
         controller: controller,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Add New Class",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
-            ),
+            const Text("Add New Class", style: TextStyle(fontSize: 20, color: Colors.green)),
             const SizedBox(height: 20),
-            TextField(
-              controller: subjectController,
-              decoration: const InputDecoration(
-                labelText: "Subject Name",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: teacherController,
-              decoration: const InputDecoration(
-                labelText: "Teacher Name",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: roomController,
-              decoration: const InputDecoration(
-                labelText: "Room",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: buildingController,
-              decoration: const InputDecoration(
-                labelText: "Building",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
+            TextField(controller: subjectController, decoration: const InputDecoration(labelText: "Subject Name")),
+            TextField(controller: teacherController, decoration: const InputDecoration(labelText: "Teacher Name")),
+            TextField(controller: roomController, decoration: const InputDecoration(labelText: "Room")),
+            TextField(controller: buildingController, decoration: const InputDecoration(labelText: "Building")),
             TextField(
               controller: startTimeController,
               readOnly: true,
-              decoration: const InputDecoration(
-                labelText: "Start Time",
-                border: OutlineInputBorder(),
-              ),
+              decoration: const InputDecoration(labelText: "Start Time"),
               onTap: () async {
-                TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                );
+                TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
                 if (picked != null) {
                   setState(() {
                     startTimeController.text = picked.format(context);
@@ -259,19 +235,12 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: endTimeController,
               readOnly: true,
-              decoration: const InputDecoration(
-                labelText: "End Time",
-                border: OutlineInputBorder(),
-              ),
+              decoration: const InputDecoration(labelText: "End Time"),
               onTap: () async {
-                TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                );
+                TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
                 if (picked != null) {
                   setState(() {
                     endTimeController.text = picked.format(context);
@@ -279,34 +248,210 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
+            ElevatedButton(
+              onPressed: () {
+                _addNewClass({
+                  'subject': subjectController.text,
+                  'teacher': teacherController.text,
+                  'room': roomController.text,
+                  'building': buildingController.text,
+                  'startTime': startTimeController.text,
+                  'endTime': endTimeController.text,
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddExamForm(ScrollController controller) {
+    final TextEditingController subjectController = TextEditingController();
+    final TextEditingController moduleController = TextEditingController();
+    final TextEditingController roomController = TextEditingController();
+    final TextEditingController dateController = TextEditingController();
+    final TextEditingController timeController = TextEditingController();
+    final TextEditingController durationController = TextEditingController();
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Add New Exam", style: TextStyle(fontSize: 20, color: Colors.green)),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the modal
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add the class to the schedule
-                    _addNewClass({
-                      'subject': subjectController.text,
-                      'teacher': teacherController.text,
-                      'room': roomController.text,
-                      'building': buildingController.text,
-                      'startTime': startTimeController.text,
-                      'endTime': endTimeController.text,
-                    });
-                    Navigator.pop(context); // Close the modal
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  child: const Text("Save"),
-                ),
-              ],
+            TextField(controller: subjectController, decoration: const InputDecoration(labelText: "Subject Name")),
+            TextField(controller: moduleController, decoration: const InputDecoration(labelText: "Module")),
+            TextField(controller: roomController, decoration: const InputDecoration(labelText: "Room")),
+            TextField(
+              controller: dateController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "Date"),
+              onTap: () async {
+                DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2100));
+                if (picked != null) {
+                  setState(() {
+                    dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                  });
+                }
+              },
+            ),
+            TextField(
+              controller: timeController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "Time"),
+              onTap: () async {
+                TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                if (picked != null) {
+                  setState(() {
+                    timeController.text = picked.format(context);
+                  });
+                }
+              },
+            ),
+            TextField(controller: durationController, decoration: const InputDecoration(labelText: "Duration (minutes)"), keyboardType: TextInputType.number),
+            ElevatedButton(
+              onPressed: () {
+                _addNewExam({
+                  'subject': subjectController.text,
+                  'module': moduleController.text,
+                  'room': roomController.text,
+                  'date': dateController.text,
+                  'time': timeController.text,
+                  'duration': durationController.text,
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+ // Add Task Form
+  Widget _buildAddTaskForm(ScrollController controller) {
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController detailsController = TextEditingController();
+    final TextEditingController dateController = TextEditingController();
+    final TextEditingController timeController = TextEditingController();
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Add New Task", style: TextStyle(fontSize: 20, color: Colors.green)),
+            const SizedBox(height: 20),
+            TextField(controller: titleController, decoration: const InputDecoration(labelText: "Title")),
+            TextField(controller: detailsController, decoration: const InputDecoration(labelText: "Details")),
+            TextField(
+              controller: dateController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "Date"),
+              onTap: () async {
+                DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2100));
+                if (picked != null) {
+                  setState(() {
+                    dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                  });
+                }
+              },
+            ),
+            TextField(
+              controller: timeController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "Time"),
+              onTap: () async {
+                TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                if (picked != null) {
+                  setState(() {
+                    timeController.text = picked.format(context);
+                  });
+                }
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addNewTask({
+                  'title': titleController.text,
+                  'details': detailsController.text,
+                  'date': dateController.text,
+                  'time': timeController.text,
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Add Event Form
+  Widget _buildAddEventForm(ScrollController controller) {
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController detailsController = TextEditingController();
+    final TextEditingController startDateController = TextEditingController();
+    final TextEditingController endDateController = TextEditingController();
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Add New Event", style: TextStyle(fontSize: 20, color: Colors.green)),
+            const SizedBox(height: 20),
+            TextField(controller: nameController, decoration: const InputDecoration(labelText: "Name")),
+            TextField(controller: detailsController, decoration: const InputDecoration(labelText: "Details")),
+            TextField(
+              controller: startDateController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "Start Date"),
+              onTap: () async {
+                DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2100));
+                if (picked != null) {
+                  setState(() {
+                    startDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                  });
+                }
+              },
+            ),
+            TextField(
+              controller: endDateController,
+              readOnly: true,
+              decoration: const InputDecoration(labelText: "End Date"),
+              onTap: () async {
+                DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2100));
+                if (picked != null) {
+                  setState(() {
+                    endDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+                  });
+                }
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addNewEvent({
+                  'name': nameController.text,
+                  'details': detailsController.text,
+                  'startDate': startDateController.text,
+                  'endDate': endDateController.text,
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
             ),
           ],
         ),
@@ -325,7 +470,7 @@ class _HomePageState extends State<HomePage> {
             for (var i = 0; i < 7; i++)
               BarChartGroupData(x: i, barRods: [
                 BarChartRodData(
-                  toY: (i + 1) * 1.5, // Dynamic values for chart
+                  toY: (i + 1) * 1.5,
                   color: i == 5 ? Colors.green : Colors.orange,
                 ),
               ]),
@@ -349,119 +494,207 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
- Widget _buildScheduleSection() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // Schedule Header
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Schedule',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
-            ),
-            IconButton(
-              icon: const Icon(Icons.add_circle, color: Colors.orange),
-              onPressed: () {
-                _showAddScheduleModal(); // Open ModalBottomSheet to add a new schedule
-              },
-            ),
-          ],
+  Widget _buildScheduleSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Schedule',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
+              ),
+              IconButton(
+                icon: const Icon(Icons.add_circle, color: Colors.orange),
+                onPressed: () {
+                  _showAddScheduleModal();
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      const SizedBox(height: 10),
-
-      // TabBar for Classes, Exam, Tasks, Events
-      DefaultTabController(
-        length: 4, // Number of tabs
-        child: Column(
-          children: [
-            const TabBar(
-              labelColor: Colors.green,
-              unselectedLabelColor: Colors.black87,
-              indicatorColor: Colors.green,
-              tabs: [
-                Tab(text: "Classes"),
-                Tab(text: "Exam"),
-                Tab(text: "Tasks"),
-                Tab(text: "Events"),
-              ],
-            ),
-            Container(
-              height: 200, // Fixed height for tab content
-              child: TabBarView(
-                children: [
-                  _buildClassesTab(),
-                  _buildExamsTab(),
-                  _buildTasksTab(),
-                  _buildEventsTab(),
+        const SizedBox(height: 10),
+        DefaultTabController(
+          length: 4,
+          child: Column(
+            children: [
+              const TabBar(
+                labelColor: Colors.green,
+                unselectedLabelColor: Colors.black87,
+                indicatorColor: Colors.green,
+                tabs: [
+                  Tab(text: "Classes"),
+                  Tab(text: "Exam"),
+                  Tab(text: "Tasks"),
+                  Tab(text: "Events"),
                 ],
+              ),
+              Container(
+                height: 200,
+                child: TabBarView(
+                  children: [
+                    _buildClassesTab(),
+                    _buildExamsTab(),
+                    _buildTasksTab(),
+                    _buildEventsTab(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildClassesTab() {
+    if (_classes.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Classes.",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: _classes.length,
+      itemBuilder: (context, index) {
+        final classItem = _classes[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+          child: ListTile(
+            title: Text(classItem['subject'] ?? ""),
+            subtitle: Text(
+              "Teacher: ${classItem['teacher']}\n"
+              "Room: ${classItem['room']}, Building: ${classItem['building']}\n"
+              "Time: ${classItem['startTime']} - ${classItem['endTime']}",
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildExamsTab() {
+    if (_exams.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Exams.",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: _exams.length,
+      itemBuilder: (context, index) {
+        final exam = _exams[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+          child: ListTile(
+            title: Text(exam['subject'] ?? ""),
+            subtitle: Text(
+              "Module: ${exam['module']}\n"
+              "Room: ${exam['room']}\n"
+              "Date: ${exam['date']} Time: ${exam['time']}\n"
+              "Duration: ${exam['duration']} minutes",
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+ // Tab Content for Tasks
+  Widget _buildTasksTab() {
+    if (_tasks.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Tasks.",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: _tasks.length,
+      itemBuilder: (context, index) {
+        final task = _tasks[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+          child: ListTile(
+            title: Text(task['title'] ?? ""),
+            subtitle: Text(
+              "Details: ${task['details']}\nDate: ${task['date']} Time: ${task['time']}",
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Tab Content for Events
+  Widget _buildEventsTab() {
+    if (_events.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Events.",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: _events.length,
+      itemBuilder: (context, index) {
+        final event = _events[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+          child: ListTile(
+            title: Text(event['name'] ?? ""),
+            subtitle: Text(
+              "Details: ${event['details']}\nStart: ${event['startDate']} End: ${event['endDate']}",
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
+  Widget _buildFeatureButton({
+    required String imagePath,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: 150,
+        decoration: BoxDecoration(
+          color: const Color(0xFFD5E1B5),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 60,
+              height: 60,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
           ],
         ),
       ),
-    ],
-  );
-}
-
-// Classes Tab Content
-Widget _buildClassesTab() {
-  if (_classes.isEmpty) {
-    return const Center(
-      child: Text(
-        "No Classes.",
-        style: TextStyle(color: Colors.green, fontSize: 16),
-      ),
     );
   }
-  return ListView.builder(
-    itemCount: _classes.length,
-    itemBuilder: (context, index) {
-      final classItem = _classes[index];
-      return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-        child: ListTile(
-          title: Text(classItem['subject'] ?? ""),
-          subtitle: Text(
-            "Teacher: ${classItem['teacher']}\n"
-            "Room: ${classItem['room']}, Building: ${classItem['building']}\n"
-            "Time: ${classItem['startTime']} - ${classItem['endTime']}",
-          ),
-        ),
-      );
-    },
-  );
-}
-
-// Placeholder content for other tabs
-Widget _buildExamsTab() {
-  return const Center(
-    child: Text(
-      "No Exams.",
-      style: TextStyle(color: Colors.green, fontSize: 16),
-    ),
-  );
-}
-
-Widget _buildTasksTab() {
-  return const Center(
-    child: Text(
-      "No Tasks.",
-      style: TextStyle(color: Colors.green, fontSize: 16),
-    ),
-  );
-}
-
-Widget _buildEventsTab() {
-  return const Center(
-    child: Text(
-      "No Events.",
-      style: TextStyle(color: Colors.green, fontSize: 16),
-    ),
-  );
-}
 }

@@ -56,6 +56,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - lib/assets/icon/icon.png
     - lib/assets/MyPlan Logo 2.png
     - lib/assets/1st_icon.png
     - lib/assets/2nd_icon.png
@@ -102,5 +103,5 @@ flutter:
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icons/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21

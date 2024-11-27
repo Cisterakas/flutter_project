@@ -56,7 +56,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - lib/assets/icon/icon.png
+    - lib/assets/icons/icon.png
     - lib/assets/MyPlan Logo 2.png
     - lib/assets/1st_icon.png
     - lib/assets/2nd_icon.png
@@ -100,8 +100,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
 flutter_launcher_icons:
   android: "launcher_icon"
-  image_path: "assets/icons/icon.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  ios: true
+  image_path: "lib/assets/icons/icon.png"
+  min_sdk_android: 24 # android min sdk min:16, default 21
+  remove_alpha_ios: true # remove transparency in the image for ios
+  adaptive_icon_background: "#ffffff" # adaptive icon background color
+  adaptive_icon_foreground: "lib/assets/icons/icon.png" # adaptive icon foreground image path
